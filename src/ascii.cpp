@@ -15,8 +15,7 @@ std::string distro_Name() {
   return " ";
 }
 
-std::string ascii_logo() {
-  std::string distro = distro_Name();
+std::string ascii_logo(std::string distro = distro_Name()) {
   distro_Name();
   if (distro == "Arch Linux") {
     return R"(

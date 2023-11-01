@@ -8,23 +8,9 @@
 #include <string>
 
 std::string default_config = R"(
--- iusearchbtwfetch will print 'ascii' value from 'config' json
--- iusearchbtwfetch will replace all "variables" (see below) by their values
--- $(distro) will be replaced with distro name e.g. Arch Linux
--- $(kernel) will be replaced with your current kernel version e.g. 6.5.8-arch1-1
--- $(wm) will be replaced with the current window manager e.g. Hyprland
--- $(shell) gets replaced by your current $SHELL e.g. /bin/bash
--- $(term) gets replaced by your terminal
--- $(ram) gets replaced by your ram usage
--- $(uptime) gets replaced with your uptime
---example config:
-
-config = {
-    ascii = [[
-)" + ascii_logo() + R"(
-    ]]
+config = { 
+    -- options
 }
-
 )";
 
 std::string replace(std::string str, const std::string &search,
@@ -101,14 +87,14 @@ int main(int argc, char *argv[]) {
     sol::table config = st["config"];
 
     ascii = config.get<sol::optional<std::string>>("ascii");
-    if (!ascii) {
-      std::cerr << "Config error" << std::endl;
-    }
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
   }
 
-  if (ascii != "") {
+  if (!ascii) {
+    std::string output = replaceVars(ascii_logo());
+    std::cout << output << std::endl;
+  } else if (ascii) {
     std::string output = replaceVars(*ascii);
     std::cout << output << std::endl;
   }
