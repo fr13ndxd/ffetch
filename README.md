@@ -2,4 +2,4 @@
 
 screenshots:
 
-![image](https://github.com/fr13ndxd/iusearchbtwfetch/assets/127687150/c7feaf50-c25f-4ba2-a2e6-9628448a9cb2)
+![image](https://github.com/fr13ndxd/ffetch/assets/127687150/3a1a0296-a951-4d60-9574-5929d60b0c97)
