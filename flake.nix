@@ -6,7 +6,7 @@
   };
 
   outputs = { self, nixpkgs, ... }: {
-    defaultPackage.x86_64-linux = nixpkgs.stdenv.mkDerivation {
+    packages.x86_64-linux."ffetch" = nixpkgs.stdenv.mkDerivation {
       name = "ffetch";
       src = ./.;
 
@@ -16,6 +16,7 @@
       buildPhase = ''
         make
       '';
+
       installPhase = ''
         sudo make install
       '';
