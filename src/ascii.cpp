@@ -1,23 +1,10 @@
+#include "./sysinfo/distro/distro.h"
 #include <algorithm>
 #include <fstream>
 #include <iostream>
 
-std::string distro_Name() {
-  std::ifstream osRelease("/etc/os-release");
-  std::string line, name;
-  while (std::getline(osRelease, line)) {
-    if (line.find("NAME=") == 0) {
-      name = line.substr(line.find("=") + 1);
-      name.erase(std::remove(name.begin(), name.end(), '"'), name.end());
-      return name;
-    }
-  }
-  return " ";
-}
-
-std::string ascii_logo(std::string distro = distro_Name()) {
-  distro_Name();
-  if (distro == "Arch Linux") {
+std::string ascii_logo(std::string os = distro()) {
+  if (os == "Arch Linux") {
     return R"(
 $(c6)      /\        $(c4) distro: $(distro)
 $(c6)     /  \       $(c4) kernel: $(kernel)
@@ -28,7 +15,7 @@ $(c4) /   |  |  -\   $(c4) ram: $(ram)
 $(c4)/_-''    ''-_\  $(c4) uptime: $(uptime)
 $(c4)                $(cr)
         )";
-  } else if (distro == "EndeavourOS") {
+  } else if (os == "EndeavourOS") {
     return R"(
       $(c1)/$(c4)\\       $(c4) distro: $(distro)
     $(c1)/$(c4)/  \\$(c6)\\    $(c4) kernel: $(kernel)
