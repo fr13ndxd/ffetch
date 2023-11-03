@@ -19,14 +19,14 @@ std::string ascii_logo(std::string distro = distro_Name()) {
   distro_Name();
   if (distro == "Arch Linux") {
     return R"(
-$(color 6)      /\        $(color 4) distro: $(distro)
-$(color 6)     /  \       $(color 4) kernel: $(kernel)
-$(color 6)    /\   \      $(color 4) wm: $(wm)
-$(color 4)   /      \     $(color 4) shell: $(shell)
-$(color 4)  /   ,,   \    $(color 4) terminal: $(term)
-$(color 4) /   |  |  -\   $(color 4) ram: $(ram)
-$(color 4)/_-''    ''-_\  $(color 4) uptime: $(uptime)
-$(color 4)                $(color reset)
+$(c6)      /\        $(c4) distro: $(distro)
+$(c6)     /  \       $(c4) kernel: $(kernel)
+$(c6)    /\   \      $(c4) wm: $(wm)
+$(c4)   /      \     $(c4) shell: $(shell)
+$(c4)  /   ,,   \    $(c4) terminal: $(term)
+$(c4) /   |  |  -\   $(c4) ram: $(ram)
+$(c4)/_-''    ''-_\  $(c4) uptime: $(uptime)
+$(c4)                $(cr)
         )";
   } else if (distro == "EndeavourOS") {
     return R"(

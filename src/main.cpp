@@ -1,5 +1,4 @@
 #include "./ascii.cpp"
-#include "./sysinfo.cpp"
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -7,6 +6,18 @@
 #include <regex>
 #include <sol/sol.hpp>
 #include <string>
+
+// system info
+// TODO: add cpu, host, packages, display, cursor, gpu, disk, battery, locale
+#include "./sysinfo/distro/distro.h"
+#include "./sysinfo/distro_id/distro_id.h"
+#include "./sysinfo/kernel/kernel.h"
+#include "./sysinfo/ram/ram.h"
+#include "./sysinfo/shell/shell.h"
+#include "./sysinfo/terminal/terminal.h"
+#include "./sysinfo/uptime/uptime.h"
+#include "./sysinfo/user.h"
+#include "./sysinfo/wm/wm.h"
 
 std::string version = "0.1";
 std::string default_config = R"(
@@ -57,10 +68,10 @@ std::string replaceVars(std::string str) {
   }
 
   std::vector<std::pair<std::string, std::string>> vars = {
-      {"$(distro)", distroName()}, {"$(distroId)", distroId()},
-      {"$(kernel)", kernel()},     {"$(wm)", wm()},
-      {"$(shell)", shell()},       {"$(term)", terminal()},
-      {"$(ram)", ram()},           {"$(uptime)", uptime()}};
+      {"$(distro)", distro()}, {"$(distroId)", distro_id()},
+      {"$(kernel)", kernel()}, {"$(wm)", wm()},
+      {"$(shell)", shell()},   {"$(term)", terminal()},
+      {"$(ram)", ram()},       {"$(uptime)", uptime()}};
 
   for (const auto &entry : vars) {
     str = replace(str, entry.first, entry.second);
@@ -77,6 +88,7 @@ int main(int argc, char *argv[]) {
 
   if (argc != 1) {
     for (int i = 1; i < argc; i++) {
+      // args
       if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
         std::cout << help_message << std::endl;
         return 0;
@@ -87,6 +99,10 @@ int main(int argc, char *argv[]) {
                  strcmp(argv[i], "--version") == 0) {
         std::cout << version << std::endl;
         return 0;
+      }
+      // other
+      else if (strcmp(argv[i], "--ascii-distro") == 0) {
+        ascii = ascii_logo(argv[i + 1]);
       }
     }
   }
@@ -107,7 +123,9 @@ int main(int argc, char *argv[]) {
     state.script_file(configFile);
     sol::state_view st(state.lua_state());
     sol::table config = st["config"];
-    ascii = config.get<sol::optional<std::string>>("ascii");
+    if (!ascii) {
+      ascii = config.get<sol::optional<std::string>>("ascii");
+    }
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
     return 0;
