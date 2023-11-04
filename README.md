@@ -2,4 +2,4 @@
 
 screenshots:
 
-![image](https://github.com/fr13ndxd/ffetch/assets/127687150/3690a0f1-5f2b-4feb-b965-8cf45778d34d)
+![image](https://github.com/fr13ndxd/ffetch/assets/127687150/36534c13-df1f-4ad8-8604-c5cec0dd970e)
