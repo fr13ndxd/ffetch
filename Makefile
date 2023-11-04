@@ -9,7 +9,7 @@ $(OUTPUT): $(SRC)
 install:
 	sudo mv $(OUTPUT) /usr/bin/ffetch
 	sudo cp -r src/ascii/ /usr/share/ffetch/
-	sudo chown ${current_user}:${current_user} /usr/share/ffetch/ascii/arch_linux.txt
+	sudo chown ${current_user}:${current_user} /usr/share/ffetch/ascii/
 	sudo chmod -R a+r /usr/share/ffetch
 
 uninstall:
