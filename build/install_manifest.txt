@@ -1,5 +1,0 @@
-/usr/bin/ffetch
-/usr/share/ffetch/endeavouros.txt
-/usr/share/ffetch/arch_linux_small.txt
-/usr/share/ffetch/ascii/arch_linux_small.txt
-/usr/share/ffetch/ascii/endeavouros.txt
