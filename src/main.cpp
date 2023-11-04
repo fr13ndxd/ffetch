@@ -127,13 +127,15 @@ int main(int argc, char *argv[]) {
     if (!ascii) {
       ascii = config.get<sol::optional<std::string>>("ascii");
     }
+    std::string ascii_distro = config.get<std::string>("ascii_distro");
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
     return 0;
   }
 
   if (!ascii) {
-    std::string output = replaceVars(ascii_logo());
+    std::string output = ascii_logo("Arch Linux");
+    output = replaceVars(output);
     std::cout << output << std::endl;
   } else if (ascii) {
     std::string output = replaceVars(*ascii);

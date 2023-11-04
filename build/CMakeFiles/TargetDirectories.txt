@@ -1,0 +1,7 @@
+/home/fr13nd/Desktop/ffetch/build/CMakeFiles/ffetch.dir
+/home/fr13nd/Desktop/ffetch/build/CMakeFiles/edit_cache.dir
+/home/fr13nd/Desktop/ffetch/build/CMakeFiles/rebuild_cache.dir
+/home/fr13nd/Desktop/ffetch/build/CMakeFiles/list_install_components.dir
+/home/fr13nd/Desktop/ffetch/build/CMakeFiles/install.dir
+/home/fr13nd/Desktop/ffetch/build/CMakeFiles/install/local.dir
+/home/fr13nd/Desktop/ffetch/build/CMakeFiles/install/strip.dir
