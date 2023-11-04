@@ -1,0 +1,8 @@
+$(c6)      /\        $(c4) distro: $(distro)
+$(c6)     /  \       $(c4) kernel: $(kernel)
+$(c6)    /\   \      $(c4) wm: $(wm)
+$(c4)   /      \     $(c4) shell: $(shell)
+$(c4)  /   ,,   \    $(c4) terminal: $(term)
+$(c4) /   |  |  -\   $(c4) ram: $(ram)
+$(c4)/_-''    ''-_\  $(c4) uptime: $(uptime)
+$(c4)                $(cr)

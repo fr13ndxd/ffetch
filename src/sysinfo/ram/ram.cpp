@@ -12,7 +12,6 @@ std::string ram() {
   int memBuffers = 0;
   int memCached = 0;
   int memSReclaimable = 0;
-  int memShmem = 0;
   int memAvailable = 0;
 
   while (std::getline(meminfo, line)) {
@@ -31,9 +30,6 @@ std::string ram() {
     } else if (std::regex_search(line, match,
                                  std::regex(R"(SReclaimable:\s+(\d+) kB)"))) {
       memSReclaimable = std::stoi(match[1]);
-    } else if (std::regex_search(line, match,
-                                 std::regex(R"(Shmem:\s+(\d+) kB)"))) {
-      memShmem = std::stoi(match[1]);
     } else if (std::regex_search(line, match,
                                  std::regex(R"(MemAvailable:\s+(\d+) kB)"))) {
       memAvailable = std::stoi(match[1]);

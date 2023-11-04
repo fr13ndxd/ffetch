@@ -1,44 +1,40 @@
 #include "./sysinfo/distro/distro.h"
 #include <algorithm>
+#include <cerrno>
+#include <cstring>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 
 std::string ascii_logo(std::string os = distro()) {
-  if (os == "Arch Linux") {
-    return R"(
-$(c6)      /\        $(c4) distro: $(distro)
-$(c6)     /  \       $(c4) kernel: $(kernel)
-$(c6)    /\   \      $(c4) wm: $(wm)
-$(c4)   /      \     $(c4) shell: $(shell)
-$(c4)  /   ,,   \    $(c4) terminal: $(term)
-$(c4) /   |  |  -\   $(c4) ram: $(ram)
-$(c4)/_-''    ''-_\  $(c4) uptime: $(uptime)
-$(c4)                $(cr)
-        )";
-  } else if (os == "EndeavourOS") {
-    return R"(
-      $(c1)/$(c4)\\       $(c4) distro: $(distro)
-    $(c1)/$(c4)/  \\$(c6)\\    $(c4) kernel: $(kernel)
-   $(c1)/$(c4)/    \\ $(c6)\\  $(c4) wm: $(wm)
- $(c1)/ $(c4)/     _) $(c6))   $(c4) shell: $(shell)
-$(c1)/_$(c4)/___-- $(c6)__-    $(c4) terminal: $(term)
- $(c6)/____--        $(c4) uptime: $(uptime) $(creset)
-    )";
+  std::replace(os.begin(), os.end(), ' ', '_');
+  std::transform(os.begin(), os.end(), os.begin(), ::tolower);
+  std::string ascii_dir = "/usr/share/ffetch/ascii/" + os + ".txt";
+  std::ifstream ascii_file(ascii_dir);
 
-  } else {
-    return R"(
-$(color 8)        #####         $(color 4) distro: $(distro)
-$(color 8)       #######        $(color 4) kernel: $(kernel)
-$(color 8)       ##$(color 4)O$(color 8)#$(color 4)O$(color 8)##        $(color 4) wm: $(wm)
-$(color 8)       #$(color 7)#####$(color 8)#        $(color 4) shell: $(shell)
-$(color 8)     ##$(color 4)##$(color 7)###$(color 4)##$(color 8)##      $(color 4) terminal: $(term)
-$(color 8)    #$(color 4)##########$(color 8)##     $(color 4) ram: $(ram)
-$(color 8)   #$(color 4)############$(color 8)##    $(color 4) uptime: $(uptime)
-$(color 8)   #$(color 4)############$(color 8)###   
-$(color 7)  ##$(color 8)#$(color 4)###########$(color 8)##$(color 7)#   
-$(color 7)######$(color 8)#$(color 4)#######$(color 8)#$(color 7)###### 
-$(color 7)#######$(color 8)#$(color 4)#####$(color 8)#$(color 7)####### 
-$(color 7)  #####$(color 8)#######$(color 7)#####$(color reset)
-    )";
+  if (ascii_file.is_open()) {
+    std::stringstream buffer;
+    buffer << ascii_file.rdbuf();
+    std::string ascii = buffer.str();
+    ascii_file.close();
+
+    return ascii;
   }
+
+  return R"(
+$(c8)        #####         $(c4) distro: $(distro)
+$(c8)       #######        $(c4) kernel: $(kernel)
+$(c8)       ##$(c4)O$(c8)#$(c4)O$(c8)##        $(c4) wm: $(wm)
+$(c8)       #$(c7)#####$(c8)#        $(c4) shell: $(shell)
+$(c8)     ##$(c4)##$(c7)###$(c4)##$(c8)##      $(c4) terminal: $(term)
+$(c8)    #$(c4)##########$(c8)##     $(c4) ram: $(ram)
+$(c8)   #$(c4)############$(c8)##    $(c4) uptime: $(uptime)
+$(c8)   #$(c4)############$(c8)###   
+$(c7)  ##$(c8)#$(c4)###########$(c8)##$(c7)#   
+$(c7)######$(c8)#$(c4)#######$(c8)#$(c7)###### 
+$(c7)#######$(c8)#$(c4)#####$(c8)#$(c7)####### 
+$(c7)  #####$(c8)#######$(c7)#####$(cr)
+
+Your distro is not yet included in ascii arts
+    )";
 }

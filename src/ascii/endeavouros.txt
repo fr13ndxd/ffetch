@@ -1,0 +1,6 @@
+      $(c1)/$(c4)\\       $(c4) distro: $(distro)
+    $(c1)/$(c4)/  \\$(c6)\\    $(c4) kernel: $(kernel)
+   $(c1)/$(c4)/    \\ $(c6)\\  $(c4) wm: $(wm)
+ $(c1)/ $(c4)/     _) $(c6))   $(c4) shell: $(shell)
+$(c1)/_$(c4)/___-- $(c6)__-    $(c4) terminal: $(term)
+ $(c6)/____--        $(c4) uptime: $(uptime) $(creset)

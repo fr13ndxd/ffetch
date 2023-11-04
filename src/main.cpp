@@ -30,8 +30,9 @@ std::string help_message =
     "OPTIONS:\n"
     "   -h, --help     Print this help and exit\n"
     "   -v, --version  Print version and exit\n"
+    "   --ascii-distro Which distro ascii art to print\n"
     "   -c, --config   Path to config file. Default: /home/" +
-    std::string(USER()) + "/.config/ffetch";
+    std::string(USER()) + "/.config/ffetch/config.lua";
 
 std::string replace(std::string str, const std::string &search,
                     const std::string &replace) {
