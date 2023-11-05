@@ -1,5 +1,6 @@
 #include <fstream>
 #include <sstream>
+#include "./uptime.h"
 
 std::string uptime() {
   std::ifstream uptimeFile("/proc/uptime");

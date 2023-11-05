@@ -7,10 +7,17 @@
 #include <sol/sol.hpp>
 #include <string>
 
+#define ANSI_SAVE_CURSOR "\033[s"
+#define ANSI_RESTORE_CURSOR "\033[u"
+#define ANSI_CLEAR_LINE "\033[K"
+
 // system info
-// TODO: add cpu, host, packages, display, cursor, gpu, disk, battery, locale
+// TODO: add host, packages, display, cursor, gpu, disk, battery, locale
+#include "./sysinfo/cpu/cpu.h"
 #include "./sysinfo/distro/distro.h"
 #include "./sysinfo/distro_id/distro_id.h"
+#include "./sysinfo/host/host.h"
+#include "./sysinfo/hostname/hostname.h"
 #include "./sysinfo/kernel/kernel.h"
 #include "./sysinfo/ram/ram.h"
 #include "./sysinfo/shell/shell.h"
@@ -72,7 +79,9 @@ std::string replaceVars(std::string str) {
       {"$(distro)", distro()}, {"$(distroId)", distro_id()},
       {"$(kernel)", kernel()}, {"$(wm)", wm()},
       {"$(shell)", shell()},   {"$(term)", terminal()},
-      {"$(ram)", ram()},       {"$(uptime)", uptime()}};
+      {"$(ram)", ram()},       {"$(uptime)", uptime()},
+      {"$(cpu)", cpu()},       {"$(user)", USER()},
+      {"$(host)", host()},     {"$(hostname)", hostname()}};
 
   for (const auto &entry : vars) {
     str = replace(str, entry.first, entry.second);
@@ -134,8 +143,7 @@ int main(int argc, char *argv[]) {
   }
 
   if (!ascii) {
-    std::string output = ascii_logo("Arch Linux");
-    output = replaceVars(output);
+    std::string output = replaceVars(ascii_logo());
     std::cout << output << std::endl;
   } else if (ascii) {
     std::string output = replaceVars(*ascii);

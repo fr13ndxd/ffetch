@@ -17,6 +17,9 @@ set(SRC
     src/sysinfo/shell/shell.cpp
     src/sysinfo/user.cpp
     src/sysinfo/terminal/terminal.cpp
+    src/sysinfo/cpu/cpu.cpp
+    src/sysinfo/host/host.cpp
+    src/sysinfo/hostname/hostname.cpp
 )
 
 set(MAIN src/main.cpp)

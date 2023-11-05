@@ -1,9 +1,6 @@
-#include <iostream>
+#include "./shell.h"
 
 std::string shell() {
-  char *sh = std::getenv("SHELL");
-  if (sh != nullptr) {
-    return sh;
-  }
-  return " ";
+  char *shell = std::getenv("SHELL");
+  return shell ? shell : " ";
 }
