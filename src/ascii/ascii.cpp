@@ -1,7 +1,5 @@
-#include "./sysinfo/distro/distro.h"
+#include "../sysinfo/distro/distro.h"
 #include <algorithm>
-#include <cerrno>
-#include <cstring>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -38,3 +36,5 @@ $(c7)  #####$(c8)#######$(c7)#####$(cr)
 Your distro is not yet included in ascii arts
     )";
 }
+
+std::string ascii() { return "ascii art"; }

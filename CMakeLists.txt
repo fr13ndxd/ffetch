@@ -20,6 +20,8 @@ set(SRC
     src/sysinfo/cpu/cpu.cpp
     src/sysinfo/host/host.cpp
     src/sysinfo/hostname/hostname.cpp
+    src/config/config.cpp
+    src/ascii/ascii.cpp
 )
 
 set(MAIN src/main.cpp)
@@ -32,9 +34,10 @@ target_compile_options(${OUTPUT} PRIVATE -Ofast -Wall)
 target_link_libraries(${OUTPUT} lua)
 
 install(TARGETS ${OUTPUT} DESTINATION /usr/bin)
-install(DIRECTORY src/ascii/ DESTINATION /usr/share/ffetch)
-file(GLOB_RECURSE ASSETS src/ascii/*)
-install(FILES ${ASSETS} DESTINATION /usr/share/ffetch/ascii/)
+file(GLOB_RECURSE ASSETS src/ascii/ascii-arts/*)
+install(DIRECTORY src/ascii/ascii-arts DESTINATION /usr/share/ffetch)
+install(FILES ${ASSETS} DESTINATION /usr/share/ffetch/ascii-arts)
+
 
 execute_process(COMMAND sudo chmod -R a+r /usr/share/ffetch)
 execute_process(COMMAND sudo chown ${current_user}:${current_user} /usr/share/ffetch/ascii/)
