@@ -18,7 +18,7 @@ stdenv.mkDerivation (
 
     installPhase = ''
        mkdir -p $out/bin
-       cp ffetch $out/bin
+       cp $src/ffetch $out/bin
     '';
 
   }
