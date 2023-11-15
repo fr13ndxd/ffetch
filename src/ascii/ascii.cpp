@@ -2,24 +2,28 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <unordered_map>
 #include <sstream>
+#include "./ascii.h"
+#include "./ascii_arts.h"
+#include <stdexcept>
 
-std::string ascii_logo(std::string os = distro()) {
+std::unordered_map<std::string, std::string> distro_art = {
+    {"nixos", nixos}
+};
+
+std::string ascii(std::string os) {
   std::replace(os.begin(), os.end(), ' ', '_');
   std::transform(os.begin(), os.end(), os.begin(), ::tolower);
-  std::string ascii_dir = "/usr/share/ffetch/ascii/" + os + ".txt";
-  std::ifstream ascii_file(ascii_dir);
-
-  if (ascii_file.is_open()) {
-    std::stringstream buffer;
-    buffer << ascii_file.rdbuf();
-    std::string ascii = buffer.str();
-    ascii_file.close();
-
-    return ascii;
+  //std::cout << os;
+  if(os.empty()) {
+    os = distro();
   }
 
-  return R"(
+  try {
+    return distro_art.at(os);
+  } catch (const std::out_of_range& e) {
+      return R"(
 $(c8)        #####         $(c4) distro: $(distro)
 $(c8)       #######        $(c4) kernel: $(kernel)
 $(c8)       ##$(c4)O$(c8)#$(c4)O$(c8)##        $(c4) wm: $(wm)
@@ -35,6 +39,5 @@ $(c7)  #####$(c8)#######$(c7)#####$(cr)
 
 Your distro is not yet included in ascii arts
     )";
+  }
 }
-
-std::string ascii() { return "ascii art"; }
