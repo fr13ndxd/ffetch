@@ -19,10 +19,6 @@ stdenv.mkDerivation (
     installPhase = ''
        mkdir -p $out/bin
        cp ffetch $out/bin
-      #
-       mkdir -p $out/ascii
-       cp ../src/ascii/ascii-arts/* $out/ascii
-
     '';
 
   }
