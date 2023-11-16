@@ -84,15 +84,6 @@ std::string replaceVars(std::string str) {
 
 
 int main(int argc, char *argv[]) {
-  if (!std::filesystem::exists(configFile)) {
-    std::filesystem::create_directories(
-        std::filesystem::path(configFile).parent_path());
-    std::ofstream cfg(configFile);
-    if (cfg.is_open()) {
-      cfg << default_config;
-    }
-  }
-
   if (argc != 1) {
     for (int i = 1; i < argc; i++) {
       // args
@@ -127,10 +118,11 @@ int main(int argc, char *argv[]) {
     output = ascii();
     output = replaceVars(*output);
     std::cout << *output << std::endl;
-  } /*else if (output) {
-    std::string output = replaceVars(*output);
+  } 
+  if (config.ascii_art) {
+    std::string output = replaceVars(*config.ascii_art);
     std::cout << output << std::endl;
-  } */
+  }
 
   return 0;
 }
