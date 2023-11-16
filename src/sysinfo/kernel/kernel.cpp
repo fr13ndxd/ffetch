@@ -13,7 +13,7 @@ std::string kernel() {
   std::getline(file, kernelVersion);
   file.close();
 
-  static const std::regex versionRegex(R"(\d+\.\d+\.\d+-\S+)");
+  static const std::regex versionRegex(R"(\b\d+(\.\d+)+-\S+|\b\d+(\.\d+)+\b)");
   std::smatch match;
   if (std::regex_search(kernelVersion, match, versionRegex)) {
     return match.str();

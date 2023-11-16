@@ -20,11 +20,15 @@ config = {
 )";
 const std::string help_message =
     "OPTIONS:\n"
-    "   -h, --help     Print this help and exit\n"
-    "   -v, --version  Print version and exit\n"
-    "   --ascii-distro Which distro ascii art to print\n"
-    "   -c, --config   Path to config file. Default: /home/" +
-    std::string(USER()) + "/.config/ffetch/config.lua";
+    "   -h, --help                        Print this help and exit\n"
+    "   -v, --version                     Print version and exit\n"
+    "   -c, --config /path/to/config      Path to config file. Default: /home/" +
+    std::string(USER()) + "/.config/ffetch/config.lua\n"
+    "   --ascii-distro 'distro'           Which distro ascii art to print\n"
+    "   --shell_path on/off               Display full shell path";
+
+// options 
+bool shell_path = false;
 
 std::string replace(const std::string &str, const std::string &search,
                     const std::string &replace) {
@@ -66,7 +70,7 @@ std::string replaceVars(std::string str) {
   std::vector<std::pair<std::string, std::string>> vars = {
       {"$(distro)", distro()}, {"$(distroId)", distro_id()},
       {"$(kernel)", kernel()}, {"$(wm)", wm()},
-      {"$(shell)", shell()},   {"$(term)", terminal()},
+      {"$(shell)", shell(shell_path)},   {"$(term)", terminal()},
       {"$(ram)", ram()},       {"$(uptime)", uptime()},
       {"$(cpu)", cpu()},       {"$(user)", USER()},
       {"$(host)", host()},     {"$(hostname)", hostname()}};
@@ -102,6 +106,19 @@ int main(int argc, char *argv[]) {
       else if (strcmp(argv[i], "--ascii-distro") == 0) {
         output = ascii(argv[i + 1]);
       }
+      else if (strcmp(argv[i], "--shell_path") == 0) {
+        if (i + 1 < argc) {
+          const char* value = argv[i + 1];
+          if (strcmp(value, "on") == 0) {
+            shell_path = true;
+          } else if (strcmp(value, "off") == 0) {
+            shell_path = false;
+          }
+          } else {
+            std::cerr << "USAGE:\n" << "\tffetch --shell_path on/off" << "\n\tinvalid option: " << argv[i + 1];
+            return 0;
+        }
+      }
     }
   }
 
@@ -118,10 +135,12 @@ int main(int argc, char *argv[]) {
     output = ascii();
     output = replaceVars(*output);
     std::cout << *output << std::endl;
-  } 
+    return 0;
+  }
   if (config.ascii_art) {
     std::string output = replaceVars(*config.ascii_art);
     std::cout << output << std::endl;
+    return 0;
   }
 
   return 0;

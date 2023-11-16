@@ -2,6 +2,6 @@
 #define SHELL_H
 #include <string>
 
-std::string shell();
+std::string shell(bool shell_path);
 
 #endif
