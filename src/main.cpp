@@ -8,8 +8,8 @@
 // other includes (systeminfo, config stuff,...)
 #include "./includes.h"
 
-std::string configDir = "/home/" + std::string(USER()) + "/.config/ffetch/";
-std::string configFile = configDir + "config.lua";
+const std::string HOME = std::getenv("HOME");
+std::string configFile = HOME + "/.config/ffetch/config.lua";
 sol::optional<std::string> output;
 
 const std::string version = "0.1";
@@ -86,8 +86,22 @@ std::string replaceVars(std::string str) {
   return str;
 }
 
-
 int main(int argc, char *argv[]) {
+
+
+  config config(configFile);
+
+  if (!config.ascii_distro.empty()) {
+    std::string ascii_distro = config.ascii_distro;
+  }
+  if (config.ascii_art.has_value()) {
+    output = config.ascii_art;
+  }
+
+  if(config.shell_path) {
+    shell_path = config.shell_path;
+  }
+
   if (argc != 1) {
     for (int i = 1; i < argc; i++) {
       // args
@@ -120,15 +134,6 @@ int main(int argc, char *argv[]) {
         }
       }
     }
-  }
-
-  config config(configFile);
-
-  if (!config.ascii_distro.empty()) {
-    std::string ascii_distro = config.ascii_distro;
-  }
-  if (config.ascii_art.has_value()) {
-    output = config.ascii_art;
   }
 
   if (!output) {

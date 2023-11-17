@@ -10,5 +10,7 @@ config::config(const std::string &configFile) {
   if (!ascii_art) {
     ascii_art = luaConfig.get<sol::optional<std::string>>("ascii");
   }
+
   ascii_distro = luaConfig.get<std::string>("ascii_distro");
+  shell_path = luaConfig.get<bool>("shell_path");
 }
