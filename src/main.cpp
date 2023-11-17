@@ -5,6 +5,7 @@
 #include <sol/sol.hpp>
 #include <string>
 #include <map>
+#include <getopt.h>
 // other includes (systeminfo, config stuff,...)
 #include "./includes.h"
 
@@ -87,57 +88,54 @@ std::string replaceVars(std::string str) {
 }
 
 int main(int argc, char *argv[]) {
-
-
+  int option;
+  std::string ascii_distro;
   config config(configFile);
 
-  if (!config.ascii_distro.empty()) {
-    std::string ascii_distro = config.ascii_distro;
-  }
-  if (config.ascii_art.has_value()) {
-    output = config.ascii_art;
-  }
+  if(!config.ascii_distro.empty()) ascii_distro = config.ascii_distro;
+  if(config.ascii_art.has_value()) output = config.ascii_art;
+  if(config.shell_path) shell_path = config.shell_path;
 
-  if(config.shell_path) {
-    shell_path = config.shell_path;
-  }
+  static struct option args[] = {
+      {"help", no_argument, 0, 'h'},
+      {"version", no_argument, 0, 'v'},
+      {"config", required_argument, 0, 'c'},
+      {"ascii-distro", required_argument, 0, 'a'},
+      {"shell_path", required_argument, 0, 's'},
+      {0, 0, 0, 0}
+  };
 
-  if (argc != 1) {
-    for (int i = 1; i < argc; i++) {
-      // args
-      if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
+  while ((option = getopt_long(argc, argv, "hvc:", args, nullptr)) != -1) {
+    switch (option) {
+      case 'h':
         std::cout << help_message << std::endl;
         return 0;
-      } else if (strcmp(argv[i], "-c") == 0 ||
-                 strcmp(argv[i], "--config") == 0) {
-        configFile = argv[i + 1];
-      } else if (strcmp(argv[i], "-v") == 0 ||
-                 strcmp(argv[i], "--version") == 0) {
+      case 'v':
         std::cout << version << std::endl;
         return 0;
-      }
-      // other
-      else if (strcmp(argv[i], "--ascii-distro") == 0) {
-        output = ascii(argv[i + 1]);
-      }
-      else if (strcmp(argv[i], "--shell_path") == 0) {
-        if (i + 1 < argc) {
-          const char* value = argv[i + 1];
-          strcmp(value, "on") ? shell_path = false : shell_path = true;
-        } 
-      }
+      case 'c':
+        configFile = optarg;
+        break;
+      case 'a':
+        ascii_distro = optarg;
+        break;
+      case 's':
+        shell_path = (strcmp(optarg, "on") == 0);
+        break;
+      default:
+        return 1;
     }
   }
 
-  if (!output) {
-    output = ascii();
+  if (!output.has_value()) {
+    output = !ascii_distro.empty() ? ascii(ascii_distro) : ascii();
     output = replaceVars(*output);
     std::cout << *output << std::endl;
     return 0;
   }
   if (config.ascii_art) {
-    std::string output = replaceVars(*config.ascii_art);
-    std::cout << output << std::endl;
+    output = replaceVars(*config.ascii_art);
+    std::cout << *output << std::endl;
     return 0;
   }
 
