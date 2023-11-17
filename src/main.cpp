@@ -127,11 +127,11 @@ int main(int argc, char *argv[]) {
             shell_path = true;
           } else if (strcmp(value, "off") == 0) {
             shell_path = false;
-          }
           } else {
             std::cerr << "USAGE:\n" << "\tffetch --shell_path on/off" << "\n\tinvalid option: " << argv[i + 1];
             return 0;
-        }
+          }
+        } 
       }
     }
   }
