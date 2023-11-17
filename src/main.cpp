@@ -123,14 +123,7 @@ int main(int argc, char *argv[]) {
       else if (strcmp(argv[i], "--shell_path") == 0) {
         if (i + 1 < argc) {
           const char* value = argv[i + 1];
-          if (strcmp(value, "on") == 0) {
-            shell_path = true;
-          } else if (strcmp(value, "off") == 0) {
-            shell_path = false;
-          } else {
-            std::cerr << "USAGE:\n" << "\tffetch --shell_path on/off" << "\n\tinvalid option: " << argv[i + 1];
-            return 0;
-          }
+          strcmp(value, "on") ? shell_path = false : shell_path = true;
         } 
       }
     }
