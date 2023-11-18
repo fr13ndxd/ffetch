@@ -128,7 +128,6 @@ int main(int argc, char *argv[]) {
   }
 
   if (!output.has_value()) {
-   // output = ascii_distro.empty() ? ascii() : ascii(ascii_distro);
     output = ascii(ascii_distro, ascii_always_small);
     output = replaceVars(*output);
     std::cout << *output << std::endl;
