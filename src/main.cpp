@@ -37,7 +37,7 @@ std::string replaceVars(std::string str) {
   std::map<std::string, std::string> colors = {
       {"1", "\033[31m"},    // Red
       {"2", "\033[32m"},    // Green
-      {"3", "\033[38;5;33m"},    // Blue
+      {"3", "\033[34m"},    // Blue
       {"4", "\033[37m"},    // White
       {"5", "\033[35m"},    // Purple
       {"6", "\033[36m"},    // Cyan

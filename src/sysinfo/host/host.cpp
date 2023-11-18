@@ -15,13 +15,13 @@ std::string getHostProductName() {
 }
 
 std::string getHostProductVersion() {
-  std::string pn;
+  std::string pv;
   if (std::filesystem::exists("/sys/devices/virtual/dmi/id/product_version") &&
       std::filesystem::is_regular_file(
           "/sys/devices/virtual/dmi/id/product_version")) {
     std::ifstream product_name("/sys/devices/virtual/dmi/id/product_version");
-    std::getline(product_name, pn);
-    return pn;
+    std::getline(product_name, pv);
+    return pv;
   }
   return "";
 }

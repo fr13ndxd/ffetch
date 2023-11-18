@@ -34,7 +34,6 @@ $(c3)==//     //==  $(c4)shell: $(shell)
 $(c3) //\\___//     $(c4)terminal: $(term)
 $(c3)// /\\  \\==   $(c4)ram: $(ram)
 $(c3)  // \\  \\    $(c4)uptime: $(uptime)
-
 )";
 
 #endif

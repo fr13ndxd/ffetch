@@ -7,9 +7,7 @@ config::config(const std::string &configFile) {
   state.script_file(configFile);
   sol::state_view st(state.lua_state());
   sol::table luaConfig = st["config"];
-  if (!ascii_art) {
-    ascii_art = luaConfig.get<sol::optional<std::string>>("ascii");
-  }
+  if (!ascii_art) ascii_art = luaConfig.get<sol::optional<std::string>>("ascii");
 
   ascii_distro = luaConfig.get<std::string>("ascii_distro");
   shell_path = luaConfig.get<bool>("shell_path");
