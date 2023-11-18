@@ -26,30 +26,18 @@ const std::string help_message =
     "   -c, --config /path/to/config      Path to config file. Default: /home/" +
     std::string(USER()) + "/.config/ffetch/config.lua\n"
     "   --ascii-distro 'distro'           Which distro ascii art to print\n"
-    "   --shell_path on/off               Display full shell path";
+    "   --ascii-always-small on/off       Always display small ascii art version"
+    "   --shell-path on/off               Display full shell path";
 
 // options 
 bool shell_path = false;
-
-std::string replace(const std::string &str, const std::string &search,
-                    const std::string &replace) {
-  std::string result;
-  size_t lastPos = 0;
-  size_t findPos;
-  while ((findPos = str.find(search, lastPos)) != std::string::npos) {
-    result.append(str, lastPos, findPos - lastPos);
-    result.append(replace);
-    lastPos = findPos + search.length();
-  }
-  result.append(str, lastPos, str.length() - lastPos);
-  return result;
-}
+bool ascii_always_small = false;
 
 std::string replaceVars(std::string str) {
   std::map<std::string, std::string> colors = {
       {"1", "\033[31m"},    // Red
       {"2", "\033[32m"},    // Green
-      {"3", "\033[34m"},    // Blue
+      {"3", "\033[38;5;33m"},    // Blue
       {"4", "\033[37m"},    // White
       {"5", "\033[35m"},    // Purple
       {"6", "\033[36m"},    // Cyan
@@ -64,8 +52,15 @@ std::string replaceVars(std::string str) {
   };
 
   for (const auto &entry : colors) {
-    str = replace(str, "$(color " + entry.first + ")", entry.second);
-    str = replace(str, "$(c" + entry.first + ")", entry.second);
+    auto replaceColors = [&entry](std::string &str, const std::string &target) {
+      std::size_t pos = 0;
+      while((pos = str.find(target, pos)) != std::string::npos) {
+        str.replace(pos, target.length(), entry.second);
+        pos += entry.second.length();
+      }
+    };
+    replaceColors(str, "$(c" + entry.first + ")");
+    replaceColors(str, "$(color " + entry.first + ")");
   }
 
   std::vector<std::pair<std::string, std::string>> vars = {
@@ -89,11 +84,12 @@ std::string replaceVars(std::string str) {
 
 int main(int argc, char *argv[]) {
   int option;
+  // options
   std::string ascii_distro;
   config config(configFile);
 
   if(!config.ascii_distro.empty()) ascii_distro = config.ascii_distro;
-  if(config.ascii_art.has_value()) output = config.ascii_art;
+  if(config.ascii_art.has_value()) output = replaceVars(*config.ascii_art);
   if(config.shell_path) shell_path = config.shell_path;
 
   static struct option args[] = {
@@ -101,7 +97,8 @@ int main(int argc, char *argv[]) {
       {"version", no_argument, 0, 'v'},
       {"config", required_argument, 0, 'c'},
       {"ascii-distro", required_argument, 0, 'a'},
-      {"shell_path", required_argument, 0, 's'},
+      {"ascii-always-small", no_argument, 0, 'l'},
+      {"shell-path", required_argument, 0, 's'},
       {0, 0, 0, 0}
   };
 
@@ -122,21 +119,22 @@ int main(int argc, char *argv[]) {
       case 's':
         shell_path = (strcmp(optarg, "on") == 0);
         break;
+      case 'l':
+        ascii_always_small = true;
+        break;
       default:
         return 1;
     }
   }
 
   if (!output.has_value()) {
-    output = !ascii_distro.empty() ? ascii(ascii_distro) : ascii();
+   // output = ascii_distro.empty() ? ascii() : ascii(ascii_distro);
+    output = ascii(ascii_distro, ascii_always_small);
     output = replaceVars(*output);
     std::cout << *output << std::endl;
     return 0;
-  }
-  if (config.ascii_art) {
-    output = replaceVars(*config.ascii_art);
-    std::cout << *output << std::endl;
-    return 0;
+  } else {
+    std::cout << *output;
   }
 
   return 0;

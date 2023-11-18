@@ -3,7 +3,7 @@
 #include "../sysinfo/distro/distro.h"
 #include <string>
 
-std::string ascii(std::string os = distro());
+std::string ascii(std::string os = distro(), bool ascii_always_small = false);
 
 
 #endif

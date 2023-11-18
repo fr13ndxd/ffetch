@@ -9,16 +9,16 @@
 #include <stdexcept>
 
 std::unordered_map<std::string, std::string> distro_art = {
-    {"nixos", nixos}
+    {"nixos", nixos},
+    {"nixos_small", nixos_small}
 };
 
-std::string ascii(std::string os) {
+std::string ascii(std::string os, bool ascii_always_small) {
+  if(os.empty()) os = distro();
   std::replace(os.begin(), os.end(), ' ', '_');
   std::transform(os.begin(), os.end(), os.begin(), ::tolower);
-  //std::cout << os;
-  if(os.empty()) {
-    os = distro();
-  }
+  if(ascii_always_small == true) os += "_small";
+  // std::cout << os;
 
   try {
     return distro_art.at(os);
